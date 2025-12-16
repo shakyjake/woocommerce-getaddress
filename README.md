@@ -1,4 +1,4 @@
-# woocommerce-getaddressio
+# woocommerce-getaddress
 Wordpress Plugin to integrate the getaddress.io API with WooCommerce
 
 ## What do?
