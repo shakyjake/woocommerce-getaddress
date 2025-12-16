@@ -24,6 +24,7 @@ if(!defined('WCGAIO_ROOT')){
 
 /**
  * Set up plugin
+ * @return void
  */
 function wcgaio_init(){
 	require_once trailingslashit(plugin_dir_path(WCGAIO_ROOT)) . 'includes/options.php';

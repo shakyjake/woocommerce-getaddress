@@ -38,6 +38,7 @@ add_action('admin_init', 'wcgaio_settings_fields');
 
 /**
  * Add options page to admin menu
+ * @return void
  */
 function wcgaio_settings_menu(){
 	add_submenu_page('options-general.php', 'WooCommerce getaddress.io settings', 'WooCommerce getaddress.io settings', 'administrator', __FILE__, 'wcgaio_options_page');
