@@ -363,7 +363,9 @@ function getaddressio_search_toggle(address_type){
 	input_fields.forEach((id) => {
 		const field = document.getElementById(id);
 		if(field){
-			show_input_fields = show_input_fields || !!field.value.length;
+			if('value' in field){
+				show_input_fields = show_input_fields || !!field.value.length;
+			}
 		}
 	});
 
@@ -419,12 +421,15 @@ function getaddressio_load(){
 
 	(($) => {
 		$('#billing_country').on('change', getaddressio_search_toggle_evt);
+		$('#billing_country').on('select2:select', getaddressio_search_toggle_evt);
 		$('#shipping_country').on('change', getaddressio_search_toggle_evt);
+		$('#shipping_country').on('select2:select', getaddressio_search_toggle_evt);
+		$(document).on('country_to_state_changed', getaddressio_search_toggle_all);
+		$(document).on('refresh', getaddressio_search_toggle_all);
 		$(window).on('hosted_fields_loaded', getaddressio_search_toggle_all);
 	})(jQuery);
 
-	getaddressio_search_toggle('billing');
-	getaddressio_search_toggle('shipping');
+	getaddressio_search_toggle_all();
 
 }
 

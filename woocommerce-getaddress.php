@@ -6,7 +6,7 @@
  * @wordpress-plugin
  * Plugin Name:   WooCommerce GetAddress
  * Description:   Woocommerce Checkout integration for getaddress.io
- * Version:       1.1.15
+ * Version:       1.1.16
  * Text Domain:   wcgaio
  * License:       MIT
  * License URI:   https://opensource.org/license/mit/
