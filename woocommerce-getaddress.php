@@ -22,6 +22,18 @@ if(!defined('WCGAIO_ROOT')){
 	define('WCGAIO_ROOT', __FILE__);
 }
 
+/**
+ * Set up plugin
+ */
+function wcgaio_init(){
+	require_once trailingslashit(plugin_dir_path(WCGAIO_ROOT)) . 'includes/options.php';
+}
+add_action('init', 'wcgaio_init');
+
+/**
+ * AJAX endpoint for address details
+ * @return void
+ */
 function wcgaio_address_details(){
 	
 	$action = '';
@@ -59,7 +71,6 @@ function wcgaio_address_details(){
 		if(curl_errno($curl)){
 			wp_die('{"Message" : "Address not found"}', 404);
 		}
-		curl_close($curl);
 	
 	} else {
 		wp_die($result, 404);
@@ -71,6 +82,10 @@ function wcgaio_address_details(){
 add_action('wp_ajax_wcgaio_address_details', 'wcgaio_address_details');
 add_action('wp_ajax_nopriv_wcgaio_address_details', 'wcgaio_address_details');
 
+/**
+ * AJAX endpoint for address searches
+ * @return void
+ */
 function wcgaio_address_search(){
 	
 	$action = '';
@@ -117,7 +132,6 @@ function wcgaio_address_search(){
 			error_log(print_r(curl_error($curl), true));
 			wp_die('{"suggestions" : []}', 200);
 		}
-		curl_close($curl);
 		
 	}
 
@@ -127,14 +141,10 @@ function wcgaio_address_search(){
 add_action('wp_ajax_wcgaio_address_search', 'wcgaio_address_search');
 add_action('wp_ajax_nopriv_wcgaio_address_search', 'wcgaio_address_search');
 
-function wcgaio_color_get(){
-	return get_option('wcgaio_button_color');
-}
-
-function wcgaio_token_get(){
-	return get_option('wcgaio_api_key');
-}
-
+/**
+ * Register scripts and styles for use in the checkout page
+ * @return void
+ */
 function wcgaio_enqueue_assets(){
 
 	if(!defined('WCGAIO_VERSION')){ // Define version constant for use in enqueuing static assets
@@ -171,6 +181,10 @@ function wcgaio_enqueue_assets(){
 }
 add_action('wp_enqueue_scripts', 'wcgaio_enqueue_assets', 1, 1);
 
+/**
+ * Hook to register the address search field in WooCommerce's checkout fields
+ * @return array
+ */
 function wcgaio_address_fields($fields){
 
 	$fields['address_search'] = [
@@ -189,7 +203,11 @@ function wcgaio_address_fields($fields){
 }
 add_filter('woocommerce_default_address_fields', 'wcgaio_address_fields', 9999, 1);
 
-function wcgaio_sanitise_boolean($value){
+/**
+ * Attempt to obtain a boolean value from whatever format it's been stored in
+ * @return bool
+ */
+function wcgaio_sanitise_boolean($value) {
 	
 	if(is_bool($value)){
 		return $value;
@@ -211,39 +229,6 @@ function wcgaio_sanitise_boolean($value){
 	
 	return false;
 	
-}
-
-function wcgaio_settings_fields(){
-    register_setting('wcgaio_settings', 'wcgaio_api_key', [
-		'type' => 'string', 
-		'sanitize_callback' => 'sanitize_text_field',
-		'default' => NULL,
-	]);
-    register_setting('wcgaio_settings', 'wcgaio_button_color', [
-		'type' => 'string', 
-		'sanitize_callback' => 'sanitize_hex_color',
-		'default' => NULL,
-	]);
-    register_setting('wcgaio_settings', 'wcgaio_border_radius', [
-		'type' => 'string', 
-		'sanitize_callback' => 'sanitize_text_field',
-		'default' => NULL,
-	]);
-    register_setting('wcgaio_settings', 'wcgaio_manual', [
-		'type' => 'boolean', 
-		'sanitize_callback' => 'wcgaio_sanitise_boolean',
-		'default' => NULL,
-	]);
-} 
-add_action('admin_init', 'wcgaio_settings_fields');
-
-function wcgaio_settings_menu(){
-	add_submenu_page('options-general.php', 'WooCommerce getaddress.io settings', 'WooCommerce getaddress.io settings', 'administrator', __FILE__, 'wcgaio_settings_page');
-}
-add_action('admin_menu', 'wcgaio_settings_menu');
-
-function wcgaio_settings_page(){
-	require_once trailingslashit(plugin_dir_path(__FILE__)) . 'options.php';
 }
 
 ?>

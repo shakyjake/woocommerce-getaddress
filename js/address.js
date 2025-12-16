@@ -1,4 +1,8 @@
-
+/**
+ * Address chosen - get the full details
+ * @param {event} event - the "change" event on the address select
+ * @return {undefined}
+ */
 function getaddressio_select(event){
 	const select = event.target;
 	select.classList.add('address__select--loading');
@@ -101,6 +105,11 @@ function getaddressio_select(event){
 	}
 }
 
+/**
+ * User wishes to enter their address manually; allow them.
+ * @param {event} event - the click/tap event on the "enter address manually" button 
+ * @return {undefined}
+ */
 function getaddressio_manual(event){
 	
 	event.stopImmediatePropagation();
@@ -112,6 +121,11 @@ function getaddressio_manual(event){
 
 }
 
+/**
+ * Perform the address search
+ * @param {event} event - The click/tap event on the "search" button
+ * @return {undefined}
+ */
 function getaddressio_search(event){
 	
 	event.stopImmediatePropagation();
@@ -246,8 +260,13 @@ function getaddressio_search(event){
 	}
 }
 
+/**
+ * Show the address fields (line 1, city, etc.)
+ * @param {string} address_type - The address type. ("shipping" or "billing")
+ * @return {undefined}
+ */
 function getaddressio_show_fields(address_type){
-	if(typeof(jQuery) === 'function'){
+	if(typeof(jQuery) === 'function'){// WC modifies these fields several times with JS throughout the page load process so we might not have jQuery yet
 		(($) => {
 			$('#' + address_type + '_address_1_field').slideDown(200);
 			$('#' + address_type + '_address_2_field').slideDown(200);
@@ -264,8 +283,13 @@ function getaddressio_show_fields(address_type){
 	}
 }
 
+/**
+ * Hide the address fields (line 1, city, etc.)
+ * @param {string} address_type - The address type. ("shipping" or "billing")
+ * @return {undefined}
+ */
 function getaddressio_hide_fields(address_type){
-	if(typeof(jQuery) === 'function'){
+	if(typeof(jQuery) === 'function'){// WC modifies these fields several times with JS throughout the page load process so we might not have jQuery yet
 		(($) => {
 			$('#' + address_type + '_address_1_field').slideUp(200);
 			$('#' + address_type + '_address_2_field').slideUp(200);
@@ -282,6 +306,11 @@ function getaddressio_hide_fields(address_type){
 	}
 }
 
+/**
+ * Show a single element (address field container)
+ * @param {string} selector - A selector that matches any number of elements
+ * @return {undefined}
+ */
 function getaddressio_show_node(selector){
 	const nodes = document.querySelectorAll(selector);
 	nodes.forEach((node) => {
@@ -289,6 +318,12 @@ function getaddressio_show_node(selector){
 	});
 }
 
+
+/**
+ * Hide a single element (address field container)
+ * @param {string} selector  - A selector that matches any number of elements
+ * @return {undefined}
+ */
 function getaddressio_hide_node(selector){
 	const nodes = document.querySelectorAll(selector);
 	nodes.forEach((node) => {
@@ -296,6 +331,11 @@ function getaddressio_hide_node(selector){
 	});
 }
 
+/**
+ * Show or hide the address fields and address search based on several factors
+ * @param {string} address_type - The address type. ("shipping" or "billing")
+ * @return {undefined}
+ */
 function getaddressio_search_toggle(address_type){
 
 	const input_fields = [
@@ -351,17 +391,30 @@ function getaddressio_search_toggle(address_type){
 
 }
 
+/**
+ * Show/hide fields for both address types
+ * @return {undefined}
+ */
 function getaddressio_search_toggle_all(){
 	getaddressio_search_toggle('billing');
 	getaddressio_search_toggle('shipping');
 }
 
+/**
+ * Show/hide fields for both address types
+ * @param {event} event - The "change" event on the country select
+ * @return {undefined}
+ */
 function getaddressio_search_toggle_evt(event){
 	const input = event.target;
 	const address_type = input.id.replace('_country', '');
 	getaddressio_search_toggle(address_type);
 }
 
+/**
+ * Set up plugin functions (post-load)
+ * @return {undefined}
+ */
 function getaddressio_load(){
 
 	(($) => {
@@ -375,6 +428,10 @@ function getaddressio_load(){
 
 }
 
+/**
+ * Set up plugin functions (ASAP)
+ * @return {undefined}
+ */
 function getaddressio_init(){
 
 	getaddressio_search_toggle_all();
